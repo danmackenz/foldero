@@ -130,3 +130,5 @@ Never auto-deleted or silently rewritten. Rollup-table rows are a status table, 
 Scope-bounded to Foldero's own managed tree: the ancestor walk stops at the nearest registered managed root (per `/organisation-setup`) or the filesystem root, whichever comes first — never assumes a specific user's folder depth or drive layout.
 
 Distinct from `/organisation-setup`'s USER-CONFIGURED docs (plugin-install-scoped, global fallback config; BRAIN.md is per-target, per-organised-folder).
+
+**Current limitation (v2.2.0):** only `/folder-execute` is wired to write the `_LOGS/.pending-brain-entry` staging file that feeds a BRAIN.md leaf entry. The other standalone mutating skills' moves remain fully captured in their own dated `_LOGS/` reports and `_LOGS/activity-log.md` per §9's invariant — nothing is unlogged — but they do not yet produce a BRAIN.md lesson-layer entry. Expanding staging-file writes to the remaining mutating skills is deferred, scoped follow-up work, not an oversight.

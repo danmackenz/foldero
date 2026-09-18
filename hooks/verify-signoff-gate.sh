@@ -1,18 +1,32 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT="${1:-.}"
-TARGET_PATH="${2:-}"
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$HOOK_DIR/lib-mv-parse.sh"
+INPUT=$(cat)
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
+[ -z "$COMMAND" ] && exit 0
+extract_mv_args "$COMMAND"
+if [ -z "$MV_SRC" ] || [ -z "$MV_DST" ]; then
+  exit 0   # not a recognisable mv at all — nothing to gate against the sign-off queue
+fi
+ROOT=$(find_managed_root "$MV_SRC")
+if [ -z "$ROOT" ]; then
+  REASON="verify-signoff-gate.sh could not determine the managed root for '$MV_SRC' — blocking by default (SUITE-CONVENTIONS §5 fails closed on ambiguity, unlike §12/§13)."
+  jq -n --arg reason "$REASON" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$reason}}'
+  exit 0
+fi
 INDEX="$ROOT/INDEX.md"
-MARKER="$ROOT/_LOGS/.signoff-approved-$(basename "$TARGET_PATH" | tr -c '[:alnum:]' '_')"
 [ -f "$INDEX" ] || exit 0
-# Not currently queued in Awaiting sign-off — nothing to gate.
-awk '/^## Awaiting sign-off/{flag=1; next} /^## /{flag=0} flag' "$INDEX" | grep -qF "$TARGET_PATH" || exit 0
-# Queued. Check for a fresh (< 60s) approved-for-move marker written by folder-signoff's own step 4.
+# flag-based extraction, not an awk range pattern — the range form `/start/,/end/` closes
+# immediately here because the start line itself also matches the end pattern
+if ! awk '/^## Awaiting sign-off/{flag=1; next} /^## /{flag=0} flag' "$INDEX" | grep -qF "$MV_SRC"; then
+  exit 0
+fi
+MARKER="$ROOT/_LOGS/.signoff-approved-$(basename "$MV_SRC" | tr -c '[:alnum:]' '_')"
 if [ -f "$MARKER" ]; then
   MARKER_AGE_SEC=$(( $(date +%s) - $(stat -f %m "$MARKER" 2>/dev/null || stat -c %Y "$MARKER") ))
-  if [ "$MARKER_AGE_SEC" -lt 60 ]; then
-    exit 0
-  fi
+  [ "$MARKER_AGE_SEC" -lt 60 ] && exit 0
 fi
-echo "VIOLATION: $TARGET_PATH is still queued in Awaiting sign-off (SUITE-CONVENTIONS §5) — only /folder-signoff may move it, and only with a fresh approved-for-move marker." >&2
-exit 1
+REASON="$MV_SRC is still queued in Awaiting sign-off (SUITE-CONVENTIONS §5) — only /folder-signoff may move it, and only with a fresh approved-for-move marker."
+jq -n --arg reason "$REASON" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$reason}}'
+exit 0

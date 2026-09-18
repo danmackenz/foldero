@@ -32,6 +32,8 @@ If either file already exists, **merge** — preserve every recorded rule and ap
 ### Phase C — File moves (CONFIDENT + SENS:FILE-BY-NAME)
 Execute every ≥90% routing with reversible `mv`, including confidently-named sensitive files to their restricted pillar (logged "sensitive — filed by name, contents not opened"). Sensitivity tier always wins over the type-based pillar.
 
+Immediately before each `mv`, write `_LOGS/.pending-brain-entry` as JSON: `{"skill": "folder-execute", "decision": "<one-line reason this item routed here>", "confidence": "<this item's classified confidence>"}`. The PostToolUse hook consumes and deletes this file automatically after the move completes — no cleanup needed here even on failure, since a stale unconsumed staging file simply means the next successful move's hook invocation overwrites it before reading (the hook always reads-then-deletes on its own next trigger, never accumulates).
+
 Log each move to `_LOGS/activity-log.md` per `references/Undo-Rules.md` §2 (reversibility schema). Collisions handled per `references/Collision-Handling.md` (never overwrite).
 
 ### Phase C-Claude — Claude Code project pre-move gate

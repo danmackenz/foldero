@@ -1,10 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT="${1:-}"
-SKILL="${2:-unknown}"
-DECISION="${3:-}"
-CONFIDENCE="${4:-}"
-MANAGED_ROOT="${5:-}"   # nearest registered managed root, passed by the calling skill; empty if none registered
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$HOOK_DIR/lib-mv-parse.sh"
+INPUT=$(cat)
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
+[ -z "$COMMAND" ] && exit 0
+extract_mv_args "$COMMAND"
+[ -z "$MV_DST" ] && exit 0
+ROOT=$(find_managed_root "$MV_DST")
+[ -z "$ROOT" ] && exit 0
+STAGING="$ROOT/_LOGS/.pending-brain-entry"
+[ -f "$STAGING" ] || exit 0
+
+SKILL=$(jq -r '.skill // "unknown"' "$STAGING" 2>/dev/null || echo unknown)
+DECISION=$(jq -r '.decision // ""' "$STAGING" 2>/dev/null || echo "")
+CONFIDENCE=$(jq -r '.confidence // ""' "$STAGING" 2>/dev/null || echo "")
+rm -f "$STAGING"
+
 BRAIN="$ROOT/BRAIN.md"
 [ -f "$BRAIN" ] || exit 0
 
@@ -16,40 +28,39 @@ BRAIN="$ROOT/BRAIN.md"
   echo "- confidence: $CONFIDENCE"
 } >> "$BRAIN"
 
-# 2. Walk ancestors, updating each one's child-rollup table row for $ROOT (or leaving
-#    each ancestor's own dated log untouched — rollup rows only, per SUITE-CONVENTIONS §18).
+# 2. Walk ancestors, updating each one's child-rollup table row for $ROOT — awk-based,
+#    not sed, avoiding both the `&`-as-replacement-metacharacter risk and the `|`-as-
+#    sed-delimiter collision a prior draft had (ROLLUP_LINE is itself pipe-delimited).
 TAXONOMY_VERSION=$(grep -m1 '^taxonomy-version:' "$BRAIN" | cut -d: -f2- | xargs || echo "unknown")
 LATEST_DECISION="$DECISION"
 OPEN_FLAGS=$(grep -c '^- flag:' "$BRAIN" 2>/dev/null || true)
 NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 CHILD="$ROOT"
-DIR="$(dirname "$ROOT")"
+WALK_DIR="$(dirname "$ROOT")"
 STOPPED_AT=""
 while :; do
-  if [ -n "$MANAGED_ROOT" ] && [ "$CHILD" = "$MANAGED_ROOT" ]; then
-    STOPPED_AT="managed-root:$MANAGED_ROOT"
+  if [ "$WALK_DIR" = "/" ] || [ "$WALK_DIR" = "$CHILD" ]; then
+    STOPPED_AT="filesystem-root:$WALK_DIR"
     break
   fi
-  if [ "$DIR" = "/" ] || [ "$DIR" = "$CHILD" ]; then
-    STOPPED_AT="filesystem-root:$DIR"
+  if [ ! -w "$WALK_DIR" ]; then
+    STOPPED_AT="permission-denied:$WALK_DIR"
     break
   fi
-  ANCESTOR_BRAIN="$DIR/BRAIN.md"
-  if [ ! -w "$DIR" ]; then
-    STOPPED_AT="permission-denied:$DIR"
+  ANCESTOR_BRAIN="$WALK_DIR/BRAIN.md"
+  if [ ! -f "$ANCESTOR_BRAIN" ]; then
+    STOPPED_AT="unmanaged-ancestor:$WALK_DIR"
     break
   fi
-  [ -f "$ANCESTOR_BRAIN" ] || touch "$ANCESTOR_BRAIN"
-  # Update (not append) this child's row in the ancestor's rollup table — a single
-  # in-place row update, legitimate per §D.4 since it's a status table, not a history.
   ROLLUP_LINE="| $CHILD | $TAXONOMY_VERSION | $LATEST_DECISION | $OPEN_FLAGS | $NOW |"
-  if grep -q "^| $CHILD |" "$ANCESTOR_BRAIN" 2>/dev/null; then
-    sed -i.bak "s|^| $CHILD |.*|$ROLLUP_LINE|" "$ANCESTOR_BRAIN" && rm -f "$ANCESTOR_BRAIN.bak"
-  else
-    echo "$ROLLUP_LINE" >> "$ANCESTOR_BRAIN"
-  fi
-  CHILD="$DIR"
-  DIR="$(dirname "$DIR")"
+  awk -v child="$CHILD" -v newline="$ROLLUP_LINE" '
+    BEGIN{done=0}
+    index($0, "| " child " |") == 1 {print newline; done=1; next}
+    {print}
+    END{if (!done) print newline}
+  ' "$ANCESTOR_BRAIN" > "$ANCESTOR_BRAIN.tmp" && mv "$ANCESTOR_BRAIN.tmp" "$ANCESTOR_BRAIN"
+  CHILD="$WALK_DIR"
+  WALK_DIR="$(dirname "$WALK_DIR")"
 done
 
 echo "BRAIN.md rollup stopped at: $STOPPED_AT" >&2
