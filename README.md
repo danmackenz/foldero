@@ -1,5 +1,5 @@
-<img src="https://raw.githubusercontent.com/danmackenz/foldero/main/brand/foldero-wordmark.png" alt="Foldero" width="280" align="left">
-<br clear="left">
+<img src="https://raw.githubusercontent.com/danmackenz/foldero/main/brand/foldero-icon.png" alt="Foldero icon" height="52" valign="middle">
+<img src="https://raw.githubusercontent.com/danmackenz/foldero/main/brand/foldero-wordmark.png" alt="Foldero" height="52" valign="middle">
 
 # Foldero — Cowork / Claude Code plugin
 
