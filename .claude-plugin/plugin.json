@@ -2,6 +2,7 @@
   "name": "foldero",
   "version": "2.1.3",
   "description": "Foldero brings orchestrated order to creative chaos — an agentic system that re-architects your folders into a tracked, maintained, always-findable structure. Built for Claude Code and Cowork.",
+  "hooks": "hooks/hooks.json",
   "author": {
     "name": "Dan Mackenzie"
   },
