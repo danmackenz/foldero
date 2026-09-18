@@ -1,3 +1,6 @@
+<img src="https://raw.githubusercontent.com/danmackenz/foldero/main/brand/foldero-wordmark.png" alt="Foldero" width="280" align="left">
+<br clear="left">
+
 # Foldero — Cowork / Claude Code plugin
 
 ![version](https://img.shields.io/badge/version-2.1.3-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platform](https://img.shields.io/badge/platform-macOS%20tested-lightgrey) ![skills](https://img.shields.io/badge/skills-20-orange)
