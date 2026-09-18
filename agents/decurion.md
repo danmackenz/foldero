@@ -14,6 +14,7 @@ Before doing anything else in a conductor invocation, read these files in this o
 2. `${CLAUDE_PLUGIN_ROOT}/references/SUITE-CONVENTIONS.md` — the shared rule-set every skill you invoke is also bound by.
 3. The managed folder's own `CLAUDE.md` and `INDEX.md`, if applicable to the sequence.
 4. Any user config files under the user's `USER-CONFIGURED`-marked reference-doc set (per SUITE-CONVENTIONS §16).
+5. The managed folder's `BRAIN.md` INDEX section — including its child-rollup table if this is a parent-level node (not full history).
 
 ## Your operational loop
 

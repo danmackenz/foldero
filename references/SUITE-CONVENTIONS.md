@@ -114,3 +114,19 @@ The plugin's own update/sync process should check for that marker before touchin
 An orchestration layer sits above the router for genuine multi-skill requests. Documented in `ORCHESTRATOR.md` at the plugin root; implemented by the conductor sub-agent at `agents/decurion.md`. The conductor sequences skill invocations, arbitrates the sequence-level run-lock (§13), propagates current user config (from `/organisation-setup` outputs) to each invoked skill, owns cross-skill state resolution, and pauses/resumes on mid-chain escalation.
 
 The conductor is **not a skill** — it is not counted among the 20 skills, not invoked via `/folder-*` slash commands, and does not have its own SKILL.md. It is bound by the same SUITE-CONVENTIONS guarantees as every skill it invokes: never-delete, ≥90% confidence + §2a exception, atomic units, sensitivity tiers, run-lock semantics. The conductor never touches `~/.claude/` or `~/.claude.json` itself; those boundaries belong to `/folder-execute` (mid-chain) and `/folder-audit-fix-claude` (retroactive) alone (see `references/Claude-Code-Continuity.md`).
+
+## 18. BRAIN.md — persistent decision memory, hierarchical trickle-up
+
+Every folder Foldero creates or manages via `/folder-execute` (Legatus) that becomes a new organised subtree gets a `BRAIN.md` at creation time, alongside `CLAUDE.md`/`INDEX.md`. So does every ancestor folder between that new subtree and the nearest already-managed root (inclusive), created if it doesn't already exist. Never inside an atomic unit (§4) — an atomic unit is one conservation-counted item in its parent's rollup, never a subtree of its own. Never in `_LOGS/`, `REVIEW-SORT/`, or `REVIEW-TRASH/`.
+
+**Two-tier content shape:**
+- **Leaf `BRAIN.md`** (no managed child subtrees below it): INDEX section (taxonomy version, most recent major decision, open flags) + dated append-only entries (date, skill invoked, decision, confidence, correction if any) — a distilled lesson layer one level above `_LOGS/`'s raw history, never a narrative log.
+- **Parent `BRAIN.md`** (one or more child subtrees, each with their own `BRAIN.md`): INDEX section extended with a **child-rollup table** — one row per direct child: path, child's current taxonomy version, child's most recent major decision (one line, pulled from the child's own INDEX, not re-derived), count of open flags in that child, last-sync timestamp. No dated entry log of its own unless the parent folder is itself a direct target of moves/decisions independent of its children. This keeps the true root's `BRAIN.md` cheap to read regardless of tree depth — O(depth) reads for full-tree status, not O(node count).
+
+Only Praeco and the Decurion read a folder's INDEX by default. A parent's rollup table usually satisfies routing without descending into children; a skill descends into a specific child's own `BRAIN.md` only when it needs decision-level detail the rollup can't answer.
+
+Never auto-deleted or silently rewritten. Rollup-table rows are a status table, not a history — in-place update of a row (taxonomy version, latest decision, open-flag count, last-sync timestamp) is legitimate and does not violate never-delete, since the prior value remains recoverable from the child's own dated entry log. Everything else (child dated entries; any ancestor's own direct dated entries, for the parent-as-direct-target case) stays append-only.
+
+Scope-bounded to Foldero's own managed tree: the ancestor walk stops at the nearest registered managed root (per `/organisation-setup`) or the filesystem root, whichever comes first — never assumes a specific user's folder depth or drive layout.
+
+Distinct from `/organisation-setup`'s USER-CONFIGURED docs (plugin-install-scoped, global fallback config; BRAIN.md is per-target, per-organised-folder).

@@ -88,6 +88,8 @@ Write `Organisation-Setup-Report-[DATE].md` to a location the user picks (defaul
 
 `/organisation-setup` does NOT touch any managed folder's own `CLAUDE.md`, `INDEX.md`, or `_LOGS/`. It writes user-level config only. Existing managed folders keep their own recorded structure per SUITE-CONVENTIONS §11 precedence — the user's new `TAXONOMY-REFERENCE.md` is a fallback for future new folders, not a retroactive override.
 
+`BRAIN.md` (leaf or parent-rollup) is likewise out of scope here — it's created per-target by `/folder-execute`'s first run against a given root or ancestor, not by this global setup pass (SUITE-CONVENTIONS §18).
+
 ## References
 
 - `references/Enterprise-Domain-Archetypes.md` — seeds the archetype menu; the user's answers extend it.

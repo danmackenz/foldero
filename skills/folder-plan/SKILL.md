@@ -49,6 +49,8 @@ When an item's name/structure signals match **two or more registered brands with
 ### 5. `CLAUDE.md` design
 Draft the full intended `CLAUDE.md`, tailored to the archetype: a clinical folder gets record-handling rules; a dev folder gets version conventions; a creative brand gets asset-handling rules. Every `CLAUDE.md` states this folder's pillars, intake model, naming/numbering rules, three-tier sensitivity handling, restricted domains, atomic-unit guardrails, and a single one-line pointer to `_LOGS/activity-log.md`.
 
+If this root already has a `CLAUDE.md` and a Claude-Code-Continuity signal (`Claude-Code-Continuity.md` §2) fires for it, do not replace that file. Fold the organization-taxonomy rules (pillars, intake model, naming/numbering, sensitivity handling, pointer line) into a clearly delimited `## Foldero organization rules` section appended to the existing file, leaving the dev-project's own content untouched above it.
+
 Use `engineering:documentation` to format if available; otherwise write directly.
 
 ### 6. `INDEX.md` design

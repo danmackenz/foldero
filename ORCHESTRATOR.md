@@ -59,6 +59,9 @@ When a chain hits an ambiguous or gated situation mid-sequence (e.g. a Tier-3 it
 ### 2.6 Claude Code project continuity (mid-chain)
 When an audit→plan→execute chain reaches a folder flagged `CLAUDE-CODE-PROJECT` by `/folder-audit` (per `references/Claude-Code-Continuity.md` §2 signals), the conductor pauses `/folder-execute` at Phase C-Claude, writes a checkpoint recording which flagged folder is pending, presents the four options from `Claude-Code-Continuity.md` §4 to the user, and resumes `/folder-execute` only after the user selects an option. The conductor does not choose the option, does not override `/folder-execute`'s precondition checks, and never touches `~/.claude/` or `~/.claude.json` itself — those boundaries belong to `/folder-execute` (mid-chain remediation) and `/folder-audit-fix-claude` (retroactive scan/remediation) alone. Standalone runs of `/folder-audit-fix-claude` do not require the conductor.
 
+### 2.7 BRAIN.md reading rule
+The Decurion and Praeco read only a managed folder's `BRAIN.md` INDEX section by default when starting a new request against that root — for a parent-level `BRAIN.md`, the child-rollup table is normally sufficient for routing; full dated history (the child's own `BRAIN.md`) is pulled in only when a skill specifically needs historical context (e.g. Arbiter reviewing a recurring miscategorization pattern flagged in a child's open-flags count). See `references/SUITE-CONVENTIONS.md` §18.
+
 ## 3. Hard boundaries (what the conductor MUST NOT do)
 
 ### 3.1 Never bypass a skill's own gating

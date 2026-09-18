@@ -22,6 +22,8 @@ description: Chain Step 3 — the executor. Scaffolds taxonomy, writes CLAUDE.md
 ### Phase A — Scaffolding
 Create all taxonomy folders. Move nothing yet. Ensure `00. Inbox/REVIEW-SORT`, `00. Inbox/REVIEW-TRASH`, and `_LOGS/` exist; seed `_LOGS/activity-log.md` and `_LOGS/import-log.md` stubs.
 
+On the first successful run against this root only, also create `BRAIN.md`: an empty INDEX (taxonomy version = this run's, no prior decisions, no open flags), no dated entries yet if this is a leaf. If this run creates a new managed subtree beneath an existing managed root, also create (or update) `BRAIN.md` in every ancestor folder between the new subtree and the nearest managed root, giving each a child-rollup table entry for the new subtree per SUITE-CONVENTIONS §18. Subsequent runs never recreate an existing `BRAIN.md` — see §18.
+
 ### Phase B — CLAUDE.md & INDEX.md
 Write tailored `CLAUDE.md` and `INDEX.md` (three sections per §10) from the plan's drafts, to the root. Ensure `CLAUDE.md` ends with a single one-line pointer to `_LOGS/activity-log.md`. Use `engineering:documentation` / `desktop-commander:knowledge-base` if available.
 
