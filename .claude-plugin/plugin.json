@@ -1,0 +1,29 @@
+{
+  "name": "foldero",
+  "version": "2.1.3",
+  "description": "Portable, gated folder-organisation suite: 20 skills, orchestrator conductor sub-agent, 14 reference docs. Audits, restructures, imports, deepens, dedupes, tags, signs off, reviews, lints, dashboards, and safely handles Claude Code project folders during moves. Never deletes, never opens sensitive contents, never touches ~/.claude without a per-finding user choice.",
+  "author": {
+    "name": "Dan Mackenzie"
+  },
+  "keywords": [
+    "folders",
+    "file-organisation",
+    "taxonomy",
+    "document-management",
+    "reorganisation",
+    "import",
+    "inbox",
+    "dedupe",
+    "sign-off",
+    "review",
+    "lint",
+    "status",
+    "tag",
+    "changelog",
+    "blueprint",
+    "handoff",
+    "orchestrator",
+    "claude-code-continuity"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "foldero-marketplace",
+  "owner": {
+    "name": "Dan Mackenzie"
+  },
+  "description": "Portable, gated folder-organisation suite: 20 skills, orchestrator conductor sub-agent, 14 reference docs. Audits, restructures, imports, deepens, dedupes, tags, signs off, reviews, lints, dashboards, and safely handles Claude Code project folders during moves.",
+  "plugins": [
+    {
+      "name": "foldero",
+      "source": "./",
+      "description": "Portable, gated folder-organisation suite: 20 skills, orchestrator conductor sub-agent, 14 reference docs. Audits, restructures, imports, deepens, dedupes, tags, signs off, reviews, lints, dashboards, and safely handles Claude Code project folders during moves. Never deletes, never opens sensitive contents, never touches ~/.claude without a per-finding user choice.",
+      "version": "2.1.3",
+      "author": {
+        "name": "Dan Mackenzie"
+      },
+      "keywords": [
+        "claude-code",
+        "claude-plugin",
+        "file-organization",
+        "folder-management",
+        "automation",
+        "productivity",
+        "audit-tool"
+      ]
+    }
+  ]
+}
