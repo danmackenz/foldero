@@ -9,7 +9,13 @@ extract_mv_args() {
   local cmd="$1"
   MV_SRC=""
   MV_DST=""
+  MV_DETECTED="no"
+  # MV_DETECTED distinguishes "not an mv at all" (nothing to check, safe to fall through)
+  # from "is an mv but couldn't parse its args" (a real ambiguity — callers that must
+  # fail closed, i.e. verify-signoff-gate.sh, need this distinction; callers that fail
+  # open on either case, i.e. verify-run-lock.sh/verify-move-mechanics.sh, can ignore it).
   echo "$cmd" | grep -qE '(^|[[:space:]&;|])mv([[:space:]]|$)' || return 0
+  MV_DETECTED="yes"
   local quoted
   quoted=$(echo "$cmd" | grep -oE '"[^"]*"' || true)
   MV_SRC=$(echo "$quoted" | sed -n '1p' | sed -e 's/^"//' -e 's/"$//')

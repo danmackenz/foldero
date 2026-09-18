@@ -6,8 +6,16 @@ INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 [ -z "$COMMAND" ] && exit 0
 extract_mv_args "$COMMAND"
+if [ "$MV_DETECTED" = "no" ]; then
+  exit 0   # not an mv at all — nothing to gate against the sign-off queue
+fi
 if [ -z "$MV_SRC" ] || [ -z "$MV_DST" ]; then
-  exit 0   # not a recognisable mv at all — nothing to gate against the sign-off queue
+  # A recognised mv token whose args we couldn't confidently parse (unquoted, single-
+  # quoted, or otherwise non-standard) — this is exactly the ambiguity §5 must fail
+  # closed on, distinct from "not an mv" above. Deny by default, don't fall through.
+  REASON="verify-signoff-gate.sh detected an mv command but could not parse its arguments — blocking by default (SUITE-CONVENTIONS §5 fails closed on ambiguity, unlike §12/§13). Command: $COMMAND"
+  jq -n --arg reason "$REASON" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$reason}}'
+  exit 0
 fi
 ROOT=$(find_managed_root "$MV_SRC")
 if [ -z "$ROOT" ]; then
