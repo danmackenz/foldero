@@ -4,6 +4,14 @@ Semantic versioning. Every mutating change to the plugin's public surface is cal
 
 ---
 
+## [Unreleased]
+
+### Changed
+
+- Renamed `agents/orchestrator-conductor.md` to `agents/decurion.md` — Roman-themed naming pass, no behavior change.
+
+---
+
 ## v2.1.3 · 2026-09-18 — Rebrand: Folder Organiser → Foldero
 
 ### Changed

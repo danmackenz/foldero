@@ -70,7 +70,7 @@ Every file `/organisation-setup` writes into `references/` carries an `<!-- USER
 | Component | Role |
 |---|---|
 | `ORCHESTRATOR.md` | Architectural contract for the orchestration layer. |
-| `agents/orchestrator-conductor.md` | The sub-agent that implements the contract. Invoked by the router for multi-skill chains. Sequences skill invocations, arbitrates the sequence-level run-lock, propagates user config, pauses/resumes on mid-chain escalation (including the Claude Code project four-option gate at `/folder-execute` Phase C-Claude). Not counted among the 20 skills. Never touches `~/.claude/` or `~/.claude.json` itself. |
+| `agents/decurion.md` | The sub-agent that implements the contract. Invoked by the router for multi-skill chains. Sequences skill invocations, arbitrates the sequence-level run-lock, propagates user config, pauses/resumes on mid-chain escalation (including the Claude Code project four-option gate at `/folder-execute` Phase C-Claude). Not counted among the 20 skills. Never touches `~/.claude/` or `~/.claude.json` itself. |
 
 ### Chain-linked trio (3)
 | Skill | Role |

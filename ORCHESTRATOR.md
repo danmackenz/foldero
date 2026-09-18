@@ -1,7 +1,7 @@
 # Orchestrator Layer — Foldero Plugin
 
 **Status:** Architectural contract. Not a skill. Not a filesystem operator.
-**Implemented by:** the conductor sub-agent at `agents/orchestrator-conductor.md`.
+**Implemented by:** the conductor sub-agent at `agents/decurion.md`.
 
 This document is the rulebook. The conductor sub-agent is the implementation that is bound by it. Do not merge them, and do not treat the conductor as "the orchestrator renamed." The separation between rule layer and acting agent is deliberate: the rule layer describes what orchestration is *allowed and required to do*; the conductor is what *does it*, strictly within these rules.
 
@@ -135,7 +135,7 @@ The conductor does NOT:
 
 ## 9. Cross-references
 
-- Implemented by: `agents/orchestrator-conductor.md`.
+- Implemented by: `agents/decurion.md`.
 - Documented in: `README.md` (architecture line + Configuration safety section).
 - Referenced by: `SUITE-CONVENTIONS.md` §17 (orchestrator architectural layer).
 - Consumes: every skill's report format per `references/Report-Templates.md`; user configs per `/organisation-setup` outputs; `references/Claude-Code-Continuity.md` (four-option gate propagation).

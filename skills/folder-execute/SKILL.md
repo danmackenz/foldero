@@ -44,7 +44,7 @@ Never silently edit `~/.claude/` or `~/.claude.json`. Never claim path migration
 
 The chosen option's outcome (executed action, verification result, `reversible:` flag per `Undo-Rules.md` §2) is recorded both in the Execution-Report and in `_LOGS/activity-log.md`. In Hands-Off mode, the user is still prompted for the per-folder choice — this decision is never auto-selected.
 
-When a chain (audit→plan→execute) hits a flagged folder mid-sequence, `orchestrator-conductor` may own the pause per `ORCHESTRATOR.md` §6 — the chain suspends via `_LOGS/.orchestrator-checkpoint-*.md` until the user picks an option.
+When a chain (audit→plan→execute) hits a flagged folder mid-sequence, `decurion` may own the pause per `ORCHESTRATOR.md` §6 — the chain suspends via `_LOGS/.orchestrator-checkpoint-*.md` until the user picks an option.
 
 ### Phase D — Review, quarantine, cruft, in-place
 - `NEEDS-REVIEW` → `REVIEW-SORT` (whole, never scattered).

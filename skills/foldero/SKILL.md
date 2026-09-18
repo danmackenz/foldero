@@ -40,7 +40,7 @@ Establish two things first: (a) does the target folder already have `CLAUDE.md` 
 | "check my repos are tidy", "find messy repo folders" | **`/folder-repo-check`** |
 | "prepare a handoff", "brief someone else on this folder's state" | **`/folder-handoff`** |
 | "fix my claude projects", "check for orphaned claude sessions", "reconnect claude code history after a move", "audit-fix-claude" | **`/folder-audit-fix-claude`** |
-| Multi-skill intent ("audit and dedupe", "set up then organise", "end-to-end tidy-up") | **orchestrator conductor** (`agents/orchestrator-conductor.md`) |
+| Multi-skill intent ("audit and dedupe", "set up then organise", "end-to-end tidy-up") | **orchestrator conductor** (`agents/decurion.md`) |
 | "what can you do here", "how does this work" | explain the suite (below) |
 
 **Precedence & guards:**
@@ -54,7 +54,7 @@ Establish two things first: (a) does the target folder already have `CLAUDE.md` 
 
 ## Orchestrator conductor hand-off
 
-When a user request contains two or more skill triggers in one phrasing, implies a state-aware decision requiring information from more than one skill, or is deliberately open-ended ("get this folder in order end-to-end"), invoke the conductor sub-agent at `agents/orchestrator-conductor.md`. Pass the user's raw request plus any resolved scope.
+When a user request contains two or more skill triggers in one phrasing, implies a state-aware decision requiring information from more than one skill, or is deliberately open-ended ("get this folder in order end-to-end"), invoke the conductor sub-agent at `agents/decurion.md`. Pass the user's raw request plus any resolved scope.
 
 The conductor is bound by `ORCHESTRATOR.md` and every SUITE-CONVENTIONS guarantee. It sequences skill invocations, arbitrates the sequence-level lock, propagates user config, and pauses on mid-chain escalation. It is not a skill and has no slash command.
 
