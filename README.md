@@ -193,7 +193,7 @@ This plugin is designed to be safe with sensitive content, but the safety comes 
 
 ## Version
 
-**v2.1.3 · 2026-09-18**
+**v2.2.0 · 2026-09-19**
 
 See `CHANGELOG.md` for the full version history.
 
