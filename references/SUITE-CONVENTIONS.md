@@ -132,3 +132,5 @@ Scope-bounded to Foldero's own managed tree: the ancestor walk stops at the near
 Distinct from `/organisation-setup`'s USER-CONFIGURED docs (plugin-install-scoped, global fallback config; BRAIN.md is per-target, per-organised-folder).
 
 **Current limitation (v2.2.0):** only `/folder-execute` is wired to write the `_LOGS/.pending-brain-entry` staging file that feeds a BRAIN.md leaf entry. The other standalone mutating skills' moves remain fully captured in their own dated `_LOGS/` reports and `_LOGS/activity-log.md` per §9's invariant — nothing is unlogged — but they do not yet produce a BRAIN.md lesson-layer entry. Expanding staging-file writes to the remaining mutating skills is deferred, scoped follow-up work, not an oversight.
+
+**Token-budget convention (skill report outputs):** Lint-Report, Status-Report, audit summaries, and similar skill-generated reports stay under ~150 words per section — counts/categories/exceptions only, never raw file-by-file listings. This formalizes existing behavior (no skill in this suite currently dumps raw listings) rather than imposing a new constraint.
