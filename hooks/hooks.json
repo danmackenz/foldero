@@ -1,0 +1,23 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {"type": "command", "command": "${CLAUDE_PLUGIN_ROOT}/hooks/block-hard-delete.sh"},
+          {"type": "command", "command": "${CLAUDE_PLUGIN_ROOT}/hooks/verify-run-lock.sh"},
+          {"type": "command", "command": "${CLAUDE_PLUGIN_ROOT}/hooks/verify-signoff-gate.sh"}
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {"type": "command", "command": "${CLAUDE_PLUGIN_ROOT}/hooks/verify-move-mechanics.sh"},
+          {"type": "command", "command": "${CLAUDE_PLUGIN_ROOT}/hooks/post-tool-use-brain-append.sh"}
+        ]
+      }
+    ]
+  }
+}

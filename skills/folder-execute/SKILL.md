@@ -22,6 +22,8 @@ description: Chain Step 3 — the executor. Scaffolds taxonomy, writes CLAUDE.md
 ### Phase A — Scaffolding
 Create all taxonomy folders. Move nothing yet. Ensure `00. Inbox/REVIEW-SORT`, `00. Inbox/REVIEW-TRASH`, and `_LOGS/` exist; seed `_LOGS/activity-log.md` and `_LOGS/import-log.md` stubs.
 
+On the first successful run against this root only, also create `BRAIN.md`: an empty INDEX (taxonomy version = this run's, no prior decisions, no open flags), no dated entries yet if this is a leaf. If this run creates a new managed subtree beneath an existing managed root, also create (or update) `BRAIN.md` in every ancestor folder between the new subtree and the nearest managed root, giving each a child-rollup table entry for the new subtree per SUITE-CONVENTIONS §18. Subsequent runs never recreate an existing `BRAIN.md` — see §18.
+
 ### Phase B — CLAUDE.md & INDEX.md
 Write tailored `CLAUDE.md` and `INDEX.md` (three sections per §10) from the plan's drafts, to the root. Ensure `CLAUDE.md` ends with a single one-line pointer to `_LOGS/activity-log.md`. Use `engineering:documentation` / `desktop-commander:knowledge-base` if available.
 
@@ -29,6 +31,8 @@ If either file already exists, **merge** — preserve every recorded rule and ap
 
 ### Phase C — File moves (CONFIDENT + SENS:FILE-BY-NAME)
 Execute every ≥90% routing with reversible `mv`, including confidently-named sensitive files to their restricted pillar (logged "sensitive — filed by name, contents not opened"). Sensitivity tier always wins over the type-based pillar.
+
+Immediately before each `mv`, write `_LOGS/.pending-brain-entry` as JSON: `{"skill": "folder-execute", "decision": "<one-line reason this item routed here>", "confidence": "<this item's classified confidence>"}`. The PostToolUse hook consumes and deletes this file automatically after the move completes — no cleanup needed here even on failure, since a stale unconsumed staging file simply means the next successful move's hook invocation overwrites it before reading (the hook always reads-then-deletes on its own next trigger, never accumulates).
 
 Log each move to `_LOGS/activity-log.md` per `references/Undo-Rules.md` §2 (reversibility schema). Collisions handled per `references/Collision-Handling.md` (never overwrite).
 
@@ -44,7 +48,7 @@ Never silently edit `~/.claude/` or `~/.claude.json`. Never claim path migration
 
 The chosen option's outcome (executed action, verification result, `reversible:` flag per `Undo-Rules.md` §2) is recorded both in the Execution-Report and in `_LOGS/activity-log.md`. In Hands-Off mode, the user is still prompted for the per-folder choice — this decision is never auto-selected.
 
-When a chain (audit→plan→execute) hits a flagged folder mid-sequence, `orchestrator-conductor` may own the pause per `ORCHESTRATOR.md` §6 — the chain suspends via `_LOGS/.orchestrator-checkpoint-*.md` until the user picks an option.
+When a chain (audit→plan→execute) hits a flagged folder mid-sequence, `decurion` may own the pause per `ORCHESTRATOR.md` §6 — the chain suspends via `_LOGS/.orchestrator-checkpoint-*.md` until the user picks an option.
 
 ### Phase D — Review, quarantine, cruft, in-place
 - `NEEDS-REVIEW` → `REVIEW-SORT` (whole, never scattered).

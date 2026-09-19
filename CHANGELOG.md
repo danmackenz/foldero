@@ -4,6 +4,37 @@ Semantic versioning. Every mutating change to the plugin's public surface is cal
 
 ---
 
+## [2.2.0] - 2026-09-19
+
+### Added
+- BRAIN.md persistent decision memory, hierarchical trickle-up (SUITE-CONVENTIONS §18): every managed subtree gets a leaf BRAIN.md; every ancestor up to the nearest managed root gets a parent BRAIN.md with a child-rollup table, kept in sync by the same PostToolUse hook that writes the leaf entry — full-tree status readable in O(depth), not O(node count).
+- Hooks for structurally-enforced run-lock, hard-delete blocking, sign-off gating, and move-verification (source-gone/destination-present); BRAIN.md leaf-append and ancestor-rollup are now hook-driven, zero-token bookkeeping.
+- `/folder-lint` rollup-freshness check (Warning-class) for stale child-rollup rows; `/folder-signoff` pruning check for oversized leaf BRAIN.md.
+- Optional subtree-rollup sections in `/folder-blueprint` and `/folder-handoff`, surfaced only when a folder's own BRAIN.md has a child-rollup table.
+- New standalone skill Artifex (`/folder-project-setup`) — interviews, matches project archetypes, researches industry convention, and scaffolds a brand-new project folder from nothing, wiring it into the BRAIN.md rollup chain like any other new managed subtree. Three new reference docs: `Project-Archetype-Library.md`, `Industry-Taxonomy-Index.md`, `Project-Scaffold-Templates.md`.
+- Token-budget convention for skill outputs and reference docs (SUITE-CONVENTIONS).
+
+### Changed
+- Renamed `agents/orchestrator-conductor.md` to `agents/decurion.md` (Roman-themed naming pass, no behavior change).
+- Rebuilt README skills table and renamed "the twenty skills" section to "The Foldero Machina" (Praeco Portarum / Praetorium / Triumviri Catenae / Decuria Praecipua / Seviri Architecti), reflecting the new 21-skill/17-reference-doc count.
+- Plugin description shortened and clarified.
+
+### Fixed
+- LICENSE formatting (header/subtitle/rule, no legal-text changes).
+
+### Investigated, no action
+- §1-2-5 packaging scope (no `files` field exists in this plugin manifest system; git-source installs ship the whole repo, no allowlist mechanism available without a disproportionate `git-subdir` repo restructure — `brand/`, favicons, and `foldero-landing.html` continue shipping as before).
+- §9 plugin icon and §10 subtitle/tagline fields — neither exists in the current plugin manifest schema.
+
+### Known limitations
+- BRAIN.md leaf entries are currently only produced by `/folder-execute`'s moves (it's the only skill wired to write the `_LOGS/.pending-brain-entry` staging file the append hook consumes). The other standalone mutating skills' moves remain fully captured in their own dated `_LOGS/` reports and `_LOGS/activity-log.md` — nothing is unlogged — but don't yet produce a BRAIN.md lesson-layer entry. Expanding staging-file writes to the remaining mutating skills is scoped, deferred follow-up work (see SUITE-CONVENTIONS §18).
+- Neither `/folder-lint` nor `/folder-status` currently detects an untracked/unattributed filesystem change under a managed root (no item-count-vs-stored-baseline comparison exists in either skill today) — a separate drift-detection gap, not addressed in this pass.
+
+### Note on version rationale
+This ships as a minor version (v2.2.0), not a patch, because it introduces genuinely new runtime mechanisms (hierarchical BRAIN.md, hooks, structural token-efficiency changes) **and** a wholly new skill plus three new reference documents and orchestrator changes — both factors independently justify a minor bump, not branding alone.
+
+---
+
 ## v2.1.3 · 2026-09-18 — Rebrand: Folder Organiser → Foldero
 
 ### Changed

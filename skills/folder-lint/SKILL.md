@@ -82,6 +82,11 @@ Per `references/Atomic-Unit-Signatures.md`:
 Per `ORCHESTRATOR.md` §6:
 - Unresolved `_LOGS/.orchestrator-checkpoint-*.md` files older than 24h → Warning (indicates a paused sequence never resumed).
 
+### Check 9 — BRAIN.md rollup freshness
+Per SUITE-CONVENTIONS §18:
+- For a parent-shaped `BRAIN.md` (has a child-rollup table), compare each row's recorded `last-sync timestamp` against that child's own `BRAIN.md` most recent dated entry.
+- A row's `last-sync timestamp` predating the child's most recent dated entry → **Warning** (staleness, not corruption — the rollup hasn't been refreshed, the data isn't wrong).
+
 ## Output
 
 Write `Lint-Report-[DATE].md` to `_LOGS/` using the format in `references/Report-Templates.md`: Check | Result (Pass/Fail/Warning) | Detail. Summary line at top: total Pass / Fail / Warning counts.

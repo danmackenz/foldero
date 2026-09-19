@@ -36,6 +36,8 @@ Both are read-only, but they serve different audiences.
    - **Anything Time-Sensitive** — released-lock accumulation crossing threshold, unresolved orchestrator checkpoints >24h old, sign-off items awaiting weeks, etc.
    - **How to continue** — a short "if you're picking this up" section pointing to `/folder-status` for the numeric snapshot and `/folder-blueprint` for the system SOP.
 
+6. **Optional — cross-tree open items.** Only if this folder's own `BRAIN.md` has a non-empty child-rollup table (SUITE-CONVENTIONS §18): add a **Cross-tree open items** section, aggregating each direct child's open-flag count straight from the rollup table (no descending into any child's own `BRAIN.md`) — consistent with Handoff's existing "current open state" framing. Skip this section entirely when there's no rollup table to show; this never changes the default output for a leaf-shaped or unmanaged folder.
+
 ## Output
 
 Write `Handoff-[DATE].md` to `_LOGS/` per `references/Report-Templates.md`.

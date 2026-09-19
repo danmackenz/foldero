@@ -31,6 +31,8 @@ description: Read-only. Formats a folder's CLAUDE.md, INDEX.md, and taxonomy int
 
 5. **Write the output document** — clean, publishable Markdown. No suite-artefact clutter (no `_LOGS/`, no run reports, no reversibility annotations). This is for a human reader who may or may not be using the plugin themselves.
 
+6. **Optional — subtree overview.** Only if this folder's own `BRAIN.md` has a non-empty child-rollup table (SUITE-CONVENTIONS §18): add a **Subtree overview** section, one line per direct child (path, archetype/taxonomy version), as a timeless structural summary of the managed subtrees beneath this root — consistent with Blueprint's existing "documents the system" framing. Skip this section entirely when there's no rollup table to show; this never changes the default output for a leaf-shaped or unmanaged folder.
+
 ## Output
 
 Write `Blueprint-[DATE].md` to `_LOGS/` per `references/Report-Templates.md`.
