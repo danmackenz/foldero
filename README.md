@@ -4,8 +4,6 @@
 
 ![version](https://img.shields.io/badge/version-2.2.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platform](https://img.shields.io/badge/platform-macOS%20tested-lightgrey) ![skills](https://img.shields.io/badge/skills-21-orange)
 
-![Foldero](https://raw.githubusercontent.com/danmackenz/foldero/main/brand/foldero-wordmark.png)
-
 **A general-purpose folder-organisation system for anyone with a messy folder tree** — a chaotic `~/Downloads`, a whole `Documents` root, a shared drive, an external backup disk. It's not built around any one profession, industry, or prior setup: it hardcodes no path, brand, or taxonomy from any specific installation, and adapts to whatever you run it on. A student, a freelancer, a small business, a large team's shared drive — if it's a folder tree that's gotten away from you, this plugin is for it.
 
 **Public v2.2 release.** Twenty-one skills, seventeen reference docs, an orchestration layer, and a dedicated conductor sub-agent. Personal defaults are stripped from every shipped file; the plugin ships as an empty template that adapts to each installing user via `/organisation-setup`. This release adds hierarchical persistent memory (BRAIN.md), hook-enforced bookkeeping, and Artifex — the plugin's first skill that scaffolds a brand-new project from nothing rather than reorganising an existing folder.
