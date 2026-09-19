@@ -25,10 +25,11 @@ description: Sole authority to clear INDEX Awaiting-sign-off queue. Approve/Reje
 5. **Execute one at a time.** On Approve or Redirect: `mv` to destination, verify (source gone AND destination present), log per `references/Undo-Rules.md` §2 with action `signoff-approve`. On Reject: remove queue entry, log with action `signoff-reject`. Never overwrite — collisions per `references/Collision-Handling.md`.
 6. **Update documents.** Remove the resolved entry from INDEX's `Awaiting sign-off` section. Append to INDEX's `Activity` section and `_LOGS/activity-log.md` (dated, per-item, with the user's decision).
 7. **Never open contents.** Tier 3 items are classified by name/metadata/structure only. Sign-off does not require or invite content inspection.
+8. **Check leaf BRAIN.md size.** If the managed folder has a `BRAIN.md` and it is leaf-shaped (no child-rollup table — see SUITE-CONVENTIONS §18), check its line count. Over 500 lines: add a flag to the Output report — "BRAIN.md is N lines, consider reviewing for consolidation." Never auto-summarize or auto-delete. Parent-shaped `BRAIN.md` (has a child-rollup table) is exempt — its size scales with child count, not activity.
 
 ## Output
 
-Write `Signoff-Report-[DATE].md` to `_LOGS/` per `references/Report-Templates.md`: Item | Recorded Destination | User Decision (Approve/Reject/Redirect) | Final Destination | Timestamp. Release the run-lock.
+Write `Signoff-Report-[DATE].md` to `_LOGS/` per `references/Report-Templates.md`: Item | Recorded Destination | User Decision (Approve/Reject/Redirect) | Final Destination | Timestamp. Include the BRAIN.md size flag (step 8) if triggered. Release the run-lock.
 
 ## References
 
