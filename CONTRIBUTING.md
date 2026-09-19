@@ -38,7 +38,7 @@ The `/folder-lint` skill validates the plugin's own conventions across all skill
 ## Issue templates
 
 - **Bug report:** include the skill name, the version, the reproducing steps, and the actual vs expected outcome. Anonymise any real content in your description.
-- **Feature request:** open with a "why now" — what real-world need does this address that the current 20 skills don't?
+- **Feature request:** open with a "why now" — what real-world need does this address that the current 21 skills don't?
 - **Reference-doc improvement:** cite the specific rule / worked example that needs improvement and propose the replacement text.
 
 ## Code of Conduct

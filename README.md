@@ -1,12 +1,12 @@
 # Foldero — Cowork / Claude Code plugin
 
-![version](https://img.shields.io/badge/version-2.1.3-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platform](https://img.shields.io/badge/platform-macOS%20tested-lightgrey) ![skills](https://img.shields.io/badge/skills-20-orange)
+![version](https://img.shields.io/badge/version-2.2.0-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![platform](https://img.shields.io/badge/platform-macOS%20tested-lightgrey) ![skills](https://img.shields.io/badge/skills-21-orange)
 
 ![Foldero](https://raw.githubusercontent.com/danmackenz/foldero/main/brand/foldero-wordmark.png)
 
 **A general-purpose folder-organisation system for anyone with a messy folder tree** — a chaotic `~/Downloads`, a whole `Documents` root, a shared drive, an external backup disk. It's not built around any one profession, industry, or prior setup: it hardcodes no path, brand, or taxonomy from any specific installation, and adapts to whatever you run it on. A student, a freelancer, a small business, a large team's shared drive — if it's a folder tree that's gotten away from you, this plugin is for it.
 
-**Public v2.1 release.** Twenty skills, fourteen reference docs, an orchestration layer, and a dedicated conductor sub-agent. Personal defaults are stripped from every shipped file; the plugin ships as an empty template that adapts to each installing user via `/organisation-setup`. This release adds a signal-based Claude Code project-continuity capability (detection at audit time, a four-option gate at execute time, and a dedicated retroactive scan/remediation skill).
+**Public v2.2 release.** Twenty-one skills, seventeen reference docs, an orchestration layer, and a dedicated conductor sub-agent. Personal defaults are stripped from every shipped file; the plugin ships as an empty template that adapts to each installing user via `/organisation-setup`. This release adds hierarchical persistent memory (BRAIN.md), hook-enforced bookkeeping, and Artifex — the plugin's first skill that scaffolds a brand-new project from nothing rather than reorganising an existing folder.
 
 ## Contents
 
@@ -14,7 +14,7 @@
 - [Quickstart](#quickstart)
 - [Plugin design principle — description length](#plugin-design-principle--description-length)
 - [Configuration safety](#configuration-safety)
-- [The twenty skills](#the-twenty-skills)
+- [The Foldero Machina](#the-foldero-machina)
 - [Guarantees (every skill)](#guarantees-every-skill)
 - [Reference docs](#reference-docs-in-references)
 - [Typical flows](#typical-flows)
@@ -59,27 +59,29 @@ Every file `/organisation-setup` writes into `references/` carries an `<!-- USER
 
 **This is a convention the plugin declares, not a guarantee the plugin can force** — a Cowork/Claude Code plugin sync process may or may not honour the marker natively. The plugin's `/folder-lint` skill verifies that any diverged-from-template file carries the marker, and `docs/runbooks/user-configured-verification.md` documents the manual verification procedure. Anyone with real folder data should read that runbook before applying a plugin update.
 
-## The twenty skills
+## The Foldero Machina
 
-### Router (1)
+Branding/naming only — no functional change to any command or guarantee, except Artifex (`/folder-project-setup`), which is genuinely new capability this release, not a renamed existing skill.
+
+### Praeco Portarum — "The front door, always answering" (1)
 | Skill | Role |
 |---|---|
 | `/foldero` | Front-door router. Routes vague/open-ended requests, hands off to the orchestrator conductor for multi-skill chains, explains the suite. |
 
-### Orchestration layer (not a skill)
+### Praetorium — "The command tent where every order originates" (not a skill)
 | Component | Role |
 |---|---|
 | `ORCHESTRATOR.md` | Architectural contract for the orchestration layer. |
-| `agents/decurion.md` | The sub-agent that implements the contract. Invoked by the router for multi-skill chains. Sequences skill invocations, arbitrates the sequence-level run-lock, propagates user config, pauses/resumes on mid-chain escalation (including the Claude Code project four-option gate at `/folder-execute` Phase C-Claude). Not counted among the 20 skills. Never touches `~/.claude/` or `~/.claude.json` itself. |
+| `agents/decurion.md` | The sub-agent that implements the contract. Invoked by the router for multi-skill chains. Sequences skill invocations, arbitrates the sequence-level run-lock, propagates user config, pauses/resumes on mid-chain escalation (including the Claude Code project four-option gate at `/folder-execute` Phase C-Claude). Not counted among the 21 skills. Never touches `~/.claude/` or `~/.claude.json` itself. |
 
-### Chain-linked trio (3)
+### Triumviri Catenae — "Three that must always act together" (3)
 | Skill | Role |
 |---|---|
 | `/folder-audit` | Step 1 — read-only audit & map. Inventories, pre-tags, flags sensitivity. |
 | `/folder-plan` | Step 2 — designs the taxonomy, routing table, and tailored CLAUDE.md + INDEX.md. Applies cross-brand ambiguity resolution. |
 | `/folder-execute` | Step 3 — scaffolds, writes docs, moves files with verified reversible `mv`, logs. |
 
-### Standalone mutating (10)
+### Decuria Praecipua — "Independent, unstoppable functions" (11)
 | Skill | Role |
 |---|---|
 | `/organisation-setup` | Interview + user-configuration generation. First-time setup and reconfiguration. |
@@ -92,8 +94,9 @@ Every file `/organisation-setup` writes into `references/` carries an `<!-- USER
 | `/folder-review` | Interactive REVIEW-SORT / REVIEW-TRASH resolver. Routes confirmed junk to `CONFIRMED-TRASH` (still never `rm`'d). |
 | `/folder-tag` | Reads and writes EXIF/IPTC keyword tags on image files. Never writes Tier 3 brand names to portable metadata. |
 | `/folder-audit-fix-claude` | Retroactive Claude Code project-continuity scan (default, read-only) and per-finding remediation (opt-in, gated). The ONLY skill authorised to touch `~/.claude/` or `~/.claude.json`, and only under the four-option per-finding gate with runtime-verified preconditions. |
+| `/folder-project-setup` | **Artifex** — "master craftsman/architect." Interviews, matches, researches, and scaffolds a brand-new project from nothing, distinct from Structor (`/folder-deepen`) who deepens what already exists. **New in v2.2.0.** |
 
-### Standalone read-only (6) — run-lock exempt
+### Seviri Architecti — "Guardians who never touch, only reveal" (6) — run-lock exempt
 | Skill | Role |
 |---|---|
 | `/folder-lint` | Validator of suite output against SUITE-CONVENTIONS. |
@@ -134,10 +137,14 @@ The full shared rule-set is in `references/SUITE-CONVENTIONS.md` — the single 
 | `Metadata-Tag-Vocabulary.md` | Tag vocabulary for `/folder-tag`. Extended per-user. |
 | `Sensitivity-Defaults.md` | Template for the user's per-brand/folder tier mappings. Populated by `/organisation-setup`. |
 | `Claude-Code-Continuity.md` | Signal-based Claude Code project detection, the four-option pre-move/remediation model, the hard-exclusion boundary for `~/.claude/` and `~/.claude.json`, and the runtime-verification requirements for Option 1. |
+| `Project-Archetype-Library.md` | Curated project archetypes (purpose, tree, docs, naming) Artifex matches against during its interview phase. |
+| `Industry-Taxonomy-Index.md` | Research pointers per niche, consumed by Artifex's research-refinement phase. |
+| `Project-Scaffold-Templates.md` | Parametrised CLAUDE.md/AGENTS.md/CHANGELOG.md/INDEX.md/README.md/BLUEPRINT.md templates Artifex fills. |
 
 ## Typical flows
 
 - **New user:** `/organisation-setup` → then anything.
+- **Brand-new project, nothing exists yet:** `/folder-project-setup` (Artifex) — interview → template match → research → scaffold → blueprint/handoff.
 - **New/messy folder:** `/foldero` → audit → plan → execute (chain, mode-inheriting).
 - **Keep it tidy:** drop into `00. Inbox`, run `/folder-inbox`.
 - **Bring in a drive:** `/folder-import` (Move/Copy, Improve/keep-names, migration CSV).

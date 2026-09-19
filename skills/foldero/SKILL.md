@@ -40,6 +40,7 @@ Establish two things first: (a) does the target folder already have `CLAUDE.md` 
 | "check my repos are tidy", "find messy repo folders" | **`/folder-repo-check`** |
 | "prepare a handoff", "brief someone else on this folder's state" | **`/folder-handoff`** |
 | "fix my claude projects", "check for orphaned claude sessions", "reconnect claude code history after a move", "audit-fix-claude" | **`/folder-audit-fix-claude`** |
+| "create a new project folder", "set up a Claude Code project for me", "scaffold a Cowork project", "make a project skeleton for [domain]", "project-init", "project-setup" | **`/folder-project-setup`** (Artifex — the only skill that builds from nothing rather than reorganising an existing folder) |
 | Multi-skill intent ("audit and dedupe", "set up then organise", "end-to-end tidy-up") | **orchestrator conductor** (`agents/decurion.md`) |
 | "what can you do here", "how does this work" | explain the suite (below) |
 
@@ -74,6 +75,7 @@ Summarise in plain language:
 - **`/folder-lint`** and **`/folder-status`** are read-only diagnostics.
 - **`/folder-tag`** manages image-file metadata; **`/folder-changelog`** narrates history; **`/folder-blueprint`** exports the folder as a shareable SOP; **`/folder-repo-check`** checks repo hygiene; **`/folder-handoff`** packages current state; **`/folder-audit-fix-claude`** retroactively finds Claude Code project folders whose session history may have been orphaned by an earlier move and offers a per-finding four-option remediation gate.
 - **`/organisation-setup`** is the first thing to run on a new install — it captures the user's own taxonomy, brands, and preferences.
+- **`/folder-project-setup`** (Artifex) interviews, matches a project archetype, researches convention, and scaffolds a brand-new project folder from nothing — every other skill in this list reorganises a folder that already exists; this is the only one that starts from empty.
 - Nothing is ever deleted, sensitive contents are never opened, and every move is verified.
 
 Then ask which fits.
@@ -87,7 +89,7 @@ Then ask which fits.
 
 ## Cross-references
 
-- Routes to (directly): `/organisation-setup`, `/folder-audit`, `/folder-inbox`, `/folder-import`, `/folder-deepen`, `/folder-undo`, `/folder-dedupe`, `/folder-signoff`, `/folder-review`, `/folder-lint`, `/folder-status`, `/folder-tag`, `/folder-changelog`, `/folder-blueprint`, `/folder-repo-check`, `/folder-handoff`, `/folder-audit-fix-claude`.
+- Routes to (directly): `/organisation-setup`, `/folder-audit`, `/folder-inbox`, `/folder-import`, `/folder-deepen`, `/folder-undo`, `/folder-dedupe`, `/folder-signoff`, `/folder-review`, `/folder-lint`, `/folder-status`, `/folder-tag`, `/folder-changelog`, `/folder-blueprint`, `/folder-repo-check`, `/folder-handoff`, `/folder-audit-fix-claude`, `/folder-project-setup`.
 - Routes to (chain-linked downstream of `/folder-audit`, not directly): `/folder-plan`, `/folder-execute` — invoked by the trio's own mode-dependent close, not by the router.
 - Routes to (orchestration layer, not a skill): the conductor sub-agent for multi-skill requests.
 - Performs no changes itself; all guarantees are enforced by the skill or conductor it hands off to.

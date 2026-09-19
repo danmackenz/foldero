@@ -62,6 +62,9 @@ When an audit→plan→execute chain reaches a folder flagged `CLAUDE-CODE-PROJE
 ### 2.7 BRAIN.md reading rule
 The Decurion and Praeco read only a managed folder's `BRAIN.md` INDEX section by default when starting a new request against that root — for a parent-level `BRAIN.md`, the child-rollup table is normally sufficient for routing; full dated history (the child's own `BRAIN.md`) is pulled in only when a skill specifically needs historical context (e.g. Arbiter reviewing a recurring miscategorization pattern flagged in a child's open-flags count). See `references/SUITE-CONVENTIONS.md` §18.
 
+### 2.8 Artifex sequencing (`/folder-project-setup`)
+When a multi-skill request implies scaffolding a brand-new project and then acting on it (e.g. "set up a new client project and then organise it"), the conductor sequences Artifex's five phases (interview → template match → research refinement → scaffold build → blueprint/handoff) the same way it sequences the trio — holding the plan, invoking each phase in turn, not requiring the user to re-specify context between them. Run-lock arbitration for this chain uses the same `_LOGS/.orchestrator-lock` mechanism as §2.2, acquired for the sequence's duration. Once the scaffold-build phase completes, the conductor ensures configuration propagation (§2.3's consistency guarantee) extends to the newly-created project: `TAXONOMY-REFERENCE.md` and the hierarchical BRAIN.md rollup chain (§2.7) reflect the new project immediately, so a skill invoked next in the same session sees it — not only on the next session. Artifex's own STOP condition (no disk writes before the user confirms the matched template, phase 2) is enforced by the skill itself; the conductor does not override or pre-empt it.
+
 ## 3. Hard boundaries (what the conductor MUST NOT do)
 
 ### 3.1 Never bypass a skill's own gating
@@ -83,7 +86,7 @@ Every skill the conductor invokes still writes its own dated Report per `referen
 The router continues to handle single-skill requests directly, without conductor involvement. If the conductor is unavailable or fails, single-skill invocations still work.
 
 ### 3.5 Never count itself as a skill
-The conductor is not among the 20 skills. It has no `/folder-*` slash command, no SKILL.md, no run-lock exemption category. It is a sub-agent artefact under `agents/`, invoked by the router when multi-skill sequencing is needed.
+The conductor is not among the 21 skills. It has no `/folder-*` slash command, no SKILL.md, no run-lock exemption category. It is a sub-agent artefact under `agents/`, invoked by the router when multi-skill sequencing is needed.
 
 ### 3.6 Never touch global Claude state
 The conductor never reads, writes, backs up, or restores anything under `~/.claude/` or `~/.claude.json`. The mid-chain Claude-Code-continuity pause (§2.6) is a coordination-only responsibility — the actual filesystem work, backup, verification, and metadata update belong to `/folder-execute` (for a move happening now) or `/folder-audit-fix-claude` (for retroactive remediation). The conductor never bypasses either skill's own preconditions.

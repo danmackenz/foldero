@@ -113,7 +113,7 @@ The plugin's own update/sync process should check for that marker before touchin
 ## 17. Orchestrator architectural layer
 An orchestration layer sits above the router for genuine multi-skill requests. Documented in `ORCHESTRATOR.md` at the plugin root; implemented by the conductor sub-agent at `agents/decurion.md`. The conductor sequences skill invocations, arbitrates the sequence-level run-lock (§13), propagates current user config (from `/organisation-setup` outputs) to each invoked skill, owns cross-skill state resolution, and pauses/resumes on mid-chain escalation.
 
-The conductor is **not a skill** — it is not counted among the 20 skills, not invoked via `/folder-*` slash commands, and does not have its own SKILL.md. It is bound by the same SUITE-CONVENTIONS guarantees as every skill it invokes: never-delete, ≥90% confidence + §2a exception, atomic units, sensitivity tiers, run-lock semantics. The conductor never touches `~/.claude/` or `~/.claude.json` itself; those boundaries belong to `/folder-execute` (mid-chain) and `/folder-audit-fix-claude` (retroactive) alone (see `references/Claude-Code-Continuity.md`).
+The conductor is **not a skill** — it is not counted among the 21 skills, not invoked via `/folder-*` slash commands, and does not have its own SKILL.md. It is bound by the same SUITE-CONVENTIONS guarantees as every skill it invokes: never-delete, ≥90% confidence + §2a exception, atomic units, sensitivity tiers, run-lock semantics. The conductor never touches `~/.claude/` or `~/.claude.json` itself; those boundaries belong to `/folder-execute` (mid-chain) and `/folder-audit-fix-claude` (retroactive) alone (see `references/Claude-Code-Continuity.md`).
 
 ## 18. BRAIN.md — persistent decision memory, hierarchical trickle-up
 
